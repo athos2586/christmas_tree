@@ -2,15 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Interactive Particle Christmas Tree</title>
+  <title>Particle Christmas Tree</title>
 
-  <!-- p5.js for drawing -->
   <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
 
-  <!-- TensorFlow.js + Handpose model -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.7"></script>
 
   <style>
     body { margin: 0; overflow: hidden; background: black; }
@@ -18,10 +15,7 @@
 </head>
 
 <body>
-  <!-- Hidden camera feed -->
-  <video id="video" width="640" height="480" style="display:none"></video>
-
-  <!-- Main script -->
+  <video id="video" width="640" height="480" style="display:none" playsinline></video>
   <script src="sketch.js"></script>
 </body>
 </html>
