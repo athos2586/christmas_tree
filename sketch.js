@@ -3,22 +3,21 @@ let model, video;
 let handX = 0;
 
 async function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight, WEBGL);
 
-  // create particles in a Christmas tree cone form
-  for (let i = 0; i < 800; i++) {
-    let r = random(0.1, 1);
-    let angle = random(TAU);
-    let height = random(1);
-    let radius = (1 - height) * 200;
+  // Create particles shaped like a Christmas tree (cone)
+  for (let i = 0; i < 1000; i++) {
+    let h = random(0, 1);                 // height 0–1
+    let r = (1 - h) * 200;                // radius decreases towards top
+    let angle = random(TAU);              // random angle
     particles.push({
-      x: radius * cos(angle),
-      y: -height * 300,
-      z: radius * sin(angle),
+      x: r * cos(angle),
+      y: -h * 350,
+      z: r * sin(angle),
     });
   }
 
-  // Webcam setup
+  // Webcam initialisation
   video = createCapture(VIDEO);
   video.size(640, 480);
   video.hide();
@@ -28,19 +27,16 @@ async function setup() {
 
 function draw() {
   background(10);
+  rotateY(millis() * 0.0002); // slow auto-rotation
 
-  translate(width / 2, height * 0.8);
-  rotateY(millis() * 0.0002);
-
-  // draw “tree”
-  stroke(255);
+  // Draw particles
   for (let p of particles) {
     push();
-    let hueShift = map(handX, 0, width, 0, 255);
-    fill(100 + hueShift, 200, 200);
+    let c = map(handX, 0, 640, 50, 255);
+    fill(c, 200, 200);
     noStroke();
     translate(p.x, p.y, p.z);
-    ellipse(0, 0, 5);
+    sphere(4);
     pop();
   }
 
@@ -49,9 +45,13 @@ function draw() {
 
 async function detectHand() {
   if (!model) return;
-  const predictions = await model.estimateHands(video.elt);
+  const prediction = await model.estimateHands(video.elt);
 
-  if (predictions.length > 0) {
-    handX = predictions[0].boundingBox.topLeft[0];
+  if (prediction.length > 0) {
+    handX = prediction[0].boundingBox.topLeft[0];
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
